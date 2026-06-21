@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Taco'N Villa — Haz tu Pedido</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Pacifico&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --negro: #0D0D0D;
+      --rojo: #C0392B;
+      --naranja: #E67E22;
+      --dorado: #F1C40F;
+      --crema: #FFF3CD;
+      --gris: #1A1A1A;
+      --gris2: #2A2A2A;
+      --gris3: #333;
+      --verde: #27ae60;
+    }
+    body { background: var(--negro); color: var(--crema); font-family: 'Nunito', sans-serif; min-height: 100vh; }
+
+    /* ══════════════════════════════
+       HEADER CON FUEGO
+    ══════════════════════════════ */
+    header {
+      position: relative;
+      text-align: center;
+      padding: 0 0 1.5rem;
+      overflow: hidden;
+      background: #000;
+    }
+
+    /* llamas de fondo animadas */
+    .fire-bg {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 220px; pointer-events: none; z-index: 0;
+      background: radial-gradient(ellipse at 50% 100%, #b22000 0%, #e65c00 30%, transparent 70%);
+      animation: fire-flicker 2s ease-in-out infinite alternate;
+    }
+    @keyframes fire-flicker {
+      0%   { opacity: 0.7; transform: scaleY(1) scaleX(1); }
+      50%  { opacity: 1;   transform: scaleY(1.06) scaleX(1.02); }
+      100% { opacity: 0.8; transform: scaleY(0.96) scaleX(0.99); }
+    }
+    .flames {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 160px; pointer-events: none; z-index: 1;
+      display: flex; justify-content: center; align-items: flex-end; gap: 0;
+    }
+    .flame {
+      width: 60px; height: 120px;
+      background: linear-gradient(0deg, #ff4500, #ff8c00, #ffd700, transparent);
+      border-radius: 50% 50% 20% 20%;
+      animation: flame-dance 1.5s ease-in-out infinite alternate;
+      transform-origin: bottom center;
+      opacity: 0.85;
+      filter: blur(2px);
+    }
+    .flame:nth-child(odd)  { animation-delay: 0.3s; height: 100px; width: 50px; }
+    .flame:nth-child(3n)   { animation-delay: 0.6s; height: 140px; width: 55px; background: linear-gradient(0deg, #c0392b, #e74c3c, #ff8c00, #ffd700, transparent); }
+    @keyframes flame-dance {
+      0%   { transform: scaleX(0.9) skewX(-5deg) scaleY(1); }
+      100% { transform: scaleX(1.1) skewX(5deg)  scaleY(1.08); }
+    }
+
+    /* logo */
+    .logo-wrap {
+      position: relative; z-index: 2;
+      padding-top: 1.8rem;
+    }
+    .logo-wrap img {
+      width: 130px; height: 130px; object-fit: contain;
+      filter: drop-shadow(0 0 22px rgba(255,140,0,0.9));
+      animation: glow-pulse 2.5s ease-in-out infinite;
+    }
+    @keyframes glow-pulse {
+      0%,100% { filter: drop-shadow(0 0 14px rgba(241,196,15,0.6)); }
+      50%      { filter: drop-shadow(0 0 32px rgba(255,69,0,0.95)); }
+    }
+
+    /* título con fuego */
+    .titulo-fuego {
+      position: relative; z-index: 2;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3rem, 14vw, 5.5rem);
+      letter-spacing: 0.05em;
+      line-height: 1;
+      margin-top: 0.3rem;
+      /* gradiente dorado-naranja-rojo */
+      background: linear-gradient(180deg,
+        #fff9c4 0%,
+        #ffd700 20%,
+        #ff8c00 50%,
+        #ff4500 75%,
+        #c0392b 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: none;
+      filter: drop-shadow(0 0 12px rgba(255,100,0,0.7));
+    }
+
+    /* subtítulo estilo pincel */
+    .subtitulo-cursiva {
+      position: relative; z-index: 2;
+      font-family: 'Pacifico', cursive;
+      font-size: clamp(1rem, 4vw, 1.5rem);
+      color: var(--dorado);
+      letter-spacing: 0.02em;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.9), 0 0 20px rgba(255,140,0,0.5);
+      margin-top: 0.2rem;
+    }
+
+    .estilo-badge {
+      position: relative; z-index: 2;
+      display: inline-block;
+      background: linear-gradient(90deg, var(--rojo), var(--naranja));
+      color: #fff;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.95rem;
+      letter-spacing: 0.2em;
+      padding: 0.3rem 1.4rem;
+      border-radius: 999px;
+      margin-top: 0.6rem;
+      border: 1.5px solid var(--dorado);
+    }
+
+    /* ── WHATSAPP BANNER ── */
+    .wa-banner {
+      background: #128C7E; text-align:center; padding:0.7rem 1rem;
+      font-weight:800; font-size:1rem; letter-spacing:0.05em; color:#fff;
+    }
+    .wa-banner a { color:#fff; text-decoration:none; }
+
+    /* ── PAPEL PICADO ── */
+    .papel-picado { width:100%; overflow:hidden; line-height:0; }
+    .papel-picado svg { display:block; width:100%; }
+
+    /* ── STEPS NAV ── */
+    .steps-nav {
+      display:flex; justify-content:center; align-items:center;
+      gap:0; padding:1.2rem 1rem 0.5rem; flex-wrap:nowrap; overflow-x:auto;
+      background: linear-gradient(180deg, #0a0a0a, var(--negro));
+    }
+    .step-item {
+      display:flex; flex-direction:column; align-items:center; gap:0.2rem;
+      min-width:72px; cursor:pointer; opacity:0.4; transition:opacity 0.3s;
+    }
+    .step-item.active { opacity:1; }
+    .step-item.done   { opacity:0.7; }
+    .step-dot {
+      width:36px; height:36px; border-radius:50%; background:var(--gris2);
+      border:2px solid var(--gris3); display:flex; align-items:center; justify-content:center;
+      font-size:1rem; transition:all 0.3s;
+    }
+    .step-item.active .step-dot { background:var(--rojo); border-color:var(--dorado); }
+    .step-item.done   .step-dot { background:var(--verde); border-color:var(--verde); color:#fff; }
+    .step-label {
+      font-size:0.62rem; font-weight:800; text-transform:uppercase;
+      letter-spacing:0.06em; color:#666; text-align:center;
+    }
+    .step-item.active .step-label { color:var(--dorado); }
+    .step-item.done   .step-label { color:var(--verde); }
+    .step-line { width:24px; height:2px; background:var(--gris3); margin-bottom:14px; flex-shrink:0; }
+
+    /* ── PANEL ── */
+    .panel { display:none; padding:1.2rem 1rem 6rem; max-width:680px; margin:0 auto; }
+    .panel.active { display:block; }
+
+    /* título de panel con estilo */
+    .panel-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      letter-spacing: 0.1em;
+      text-align: center;
+      margin-bottom: 1.2rem;
+      background: linear-gradient(90deg, var(--naranja), var(--dorado));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ── PLATILLO CARD ── */
+    .platillo-grid { display:grid; grid-template-columns:1fr 1fr; gap:0.9rem; margin-bottom:1.5rem; }
+    .platillo-card {
+      background:var(--gris); border:2px solid var(--gris3); border-radius:14px;
+      overflow:hidden; cursor:pointer; transition:all 0.2s;
+      display:flex; flex-direction:column;
+    }
+    .platillo-card:hover  { border-color:var(--naranja); transform:translateY(-2px); }
+    .platillo-card.sel    { border-color:var(--dorado); background:#1e1000; }
+    .platillo-card img {
+      width:100%; height:120px; object-fit:cover;
+      transition: transform 0.3s;
+    }
+    .platillo-card:hover img { transform: scale(1.05); }
+    .platillo-card .pinfo { padding:0.7rem 0.7rem 0.8rem; }
+    .platillo-card .pnom {
+      font-family:'Bebas Neue',sans-serif; font-size:1.05rem;
+      color:var(--crema); letter-spacing:0.04em; line-height:1.2;
+    }
+    .platillo-card .ppric {
+      font-size:0.82rem; color:var(--dorado); margin-top:0.25rem; font-weight:700;
+    }
+    .platillo-card.sel .pnom { color:var(--dorado); }
+
+    /* ── CANTIDAD ── */
+    .cantidad-label { text-align:center; font-size:0.8rem; font-weight:700; color:#666; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:0.3rem; }
+    .cantidad-row { display:flex; align-items:center; justify-content:center; gap:1rem; margin-bottom:1.2rem; }
+    .qty-btn {
+      width:40px; height:40px; border-radius:50%; border:2px solid var(--naranja);
+      background:transparent; color:var(--naranja); font-size:1.5rem; font-weight:800;
+      cursor:pointer; display:flex; align-items:center; justify-content:center;
+      transition:all 0.15s;
+    }
+    .qty-btn:hover { background:var(--naranja); color:#000; }
+    .qty-num { font-family:'Bebas Neue',sans-serif; font-size:2.2rem; color:var(--dorado); min-width:44px; text-align:center; }
+
+    /* ── CHIPS ── */
+    .opcion-grupo { margin-bottom:1.2rem; }
+    .opcion-titulo {
+      font-family:'Bebas Neue',sans-serif; font-size:1.15rem; color:var(--naranja);
+      letter-spacing:0.08em; margin-bottom:0.5rem;
+      border-bottom:1px solid var(--gris3); padding-bottom:0.3rem;
+    }
+    .opcion-chips { display:flex; flex-wrap:wrap; gap:0.5rem; }
+    .chip {
+      padding:0.35rem 0.9rem; border-radius:999px; border:2px solid var(--gris3);
+      background:var(--gris2); color:#aaa; font-size:0.82rem; font-weight:700;
+      cursor:pointer; transition:all 0.15s; user-select:none;
+    }
+    .chip:hover { border-color:var(--naranja); color:var(--naranja); }
+    .chip.sel   { background:var(--rojo); border-color:var(--dorado); color:var(--dorado); }
+
+    /* ── CARRITO ── */
+    .carrito-vacio { text-align:center; padding:3rem 1rem; color:#555; }
+    .carrito-vacio .big { font-size:3rem; display:block; margin-bottom:0.5rem; }
+    .item-carrito {
+      background:var(--gris); border-radius:12px; padding:0.9rem 1rem;
+      margin-bottom:0.8rem; border:1px solid var(--gris3); position:relative;
+    }
+    .ic-nombre { font-family:'Bebas Neue',sans-serif; font-size:1.1rem; color:var(--crema); letter-spacing:0.04em; }
+    .ic-detalle { font-size:0.78rem; color:#888; margin-top:0.2rem; line-height:1.4; }
+    .ic-precio  { font-family:'Bebas Neue',sans-serif; font-size:1.2rem; color:var(--dorado); margin-top:0.4rem; }
+    .ic-del { position:absolute; top:0.7rem; right:0.8rem; background:transparent; border:none; color:#555; font-size:1.1rem; cursor:pointer; }
+    .ic-del:hover { color:var(--rojo); }
+    .carrito-total {
+      text-align:right; font-family:'Bebas Neue',sans-serif; font-size:1.8rem;
+      color:var(--dorado); margin:0.5rem 0 1.2rem; padding-top:0.5rem;
+      border-top:1px solid var(--gris3);
+    }
+
+    /* ── DATOS CLIENTE ── */
+    .campo { margin-bottom:1rem; }
+    .campo label {
+      display:block; font-size:0.82rem; font-weight:800; color:var(--naranja);
+      text-transform:uppercase; letter-spacing:0.08em; margin-bottom:0.35rem;
+    }
+    .campo input, .campo textarea {
+      width:100%; background:var(--gris2); border:2px solid var(--gris3); border-radius:8px;
+      color:var(--crema); font-family:'Nunito',sans-serif; font-size:0.95rem;
+      padding:0.6rem 0.8rem; outline:none; transition:border-color 0.2s;
+    }
+    .campo input:focus, .campo textarea:focus { border-color:var(--naranja); }
+    .campo textarea { resize:vertical; min-height:70px; }
+
+    /* entrega */
+    .entrega-opciones { display:flex; gap:0.8rem; margin-bottom:1rem; }
+    .entrega-opt {
+      flex:1; padding:0.8rem; border-radius:12px; border:2px solid var(--gris3);
+      background:var(--gris2); text-align:center; cursor:pointer; transition:all 0.2s;
+    }
+    .entrega-opt:hover { border-color:var(--naranja); }
+    .entrega-opt.sel   { border-color:var(--dorado); background:#1f1000; }
+    .entrega-opt .eo-icon { font-size:1.8rem; display:block; margin-bottom:0.3rem; }
+    .entrega-opt .eo-txt  { font-size:0.8rem; font-weight:800; color:#aaa; text-transform:uppercase; letter-spacing:0.06em; }
+    .entrega-opt.sel .eo-txt { color:var(--dorado); }
+
+    /* ── BOTONES ── */
+    .btn-nav {
+      width:100%; padding:0.8rem; border-radius:10px; border:none; cursor:pointer;
+      font-family:'Bebas Neue',sans-serif; font-size:1.2rem; letter-spacing:0.12em;
+      transition:all 0.2s; margin-top:0.5rem;
+    }
+    .btn-nav:active { transform:scale(0.98); }
+    .btn-primary   { background:linear-gradient(90deg,var(--rojo),#a93226); color:var(--dorado); border:2px solid var(--dorado); }
+    .btn-primary:hover { background:linear-gradient(90deg,#a93226,var(--rojo)); }
+    .btn-secondary { background:var(--gris2); color:#aaa; border:2px solid var(--gris3); }
+    .btn-secondary:hover { border-color:var(--naranja); color:var(--naranja); }
+    .btn-wa { background:linear-gradient(90deg,#128C7E,#075E54); color:#fff; font-size:1.1rem; }
+    .btn-wa:hover { background:linear-gradient(90deg,#075E54,#128C7E); }
+
+    /* ── RESUMEN ── */
+    .resumen-header { background:var(--gris); border-radius:12px; padding:1rem; margin-bottom:1rem; border:1px solid var(--gris3); }
+    .resumen-titulo { font-family:'Bebas Neue',sans-serif; font-size:1.1rem; color:var(--naranja); letter-spacing:0.08em; margin-bottom:0.5rem; }
+    .resumen-dato   { font-size:0.85rem; color:#ccc; line-height:1.7; }
+
+    /* nota textarea */
+    .nota-field {
+      width:100%; background:#1a1a1a; border:2px solid #333; border-radius:8px;
+      color:#fff; font-family:'Nunito',sans-serif; font-size:0.9rem;
+      padding:0.6rem 0.8rem; outline:none; resize:vertical; min-height:60px;
+    }
+    .nota-field:focus { border-color:var(--naranja); }
+
+    .oculto { display:none !important; }
+
+    @media (max-width:400px) {
+      .platillo-grid { grid-template-columns:1fr; }
+      .step-line { width:14px; }
+      .titulo-fuego { font-size: 3rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════ HEADER ══════════ -->
+<header>
+  <div class="fire-bg"></div>
+  <div class="flames">
+    <div class="flame"></div><div class="flame"></div><div class="flame"></div>
+    <div class="flame"></div><div class="flame"></div><div class="flame"></div>
+    <div class="flame"></div><div class="flame"></div><div class="flame"></div>
+    <div class="flame"></div><div class="flame"></div><div class="flame"></div>
+    <div class="flame"></div><div class="flame"></div><div class="flame"></div>
+  </div>
+
+  <div class="logo-wrap">
+    <img src="logo.jpg" alt="Taco'N Villa"
+         onerror="this.style.display='none';" />
+  </div>
+
+  <div class="titulo-fuego">TACO'N VILLA</div>
+  <div class="subtitulo-cursiva">Tacos de Carne Asada</div>
+  <div class="estilo-badge">🌶️ Estilo China, Nuevo León</div>
+</header>
+
+<!-- WHATSAPP BANNER -->
+<div class="wa-banner">
+  📱 Pedidos WhatsApp &nbsp;<a href="https://wa.me/528991672238">899 167 22 38</a>
+</div>
+
+<!-- PAPEL PICADO -->
+<div class="papel-picado">
+  <svg viewBox="0 0 1200 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <defs>
+      <pattern id="pp1" x="0" y="0" width="80" height="60" patternUnits="userSpaceOnUse">
+        <polygon points="0,0 80,0 40,55" fill="#C0392B"/>
+        <circle cx="40" cy="22" r="7" fill="#0D0D0D"/>
+        <circle cx="20" cy="10" r="4" fill="#0D0D0D"/>
+        <circle cx="60" cy="10" r="4" fill="#0D0D0D"/>
+        <rect x="34" y="34" width="12" height="12" rx="2" fill="#0D0D0D"/>
+      </pattern>
+    </defs>
+    <rect width="100%" height="60" fill="url(#pp1)"/>
+  </svg>
+</div>
+
+<!-- STEPS -->
+<nav class="steps-nav">
+  <div class="step-item active" data-step="0"><div class="step-dot">🌮</div><div class="step-label">Platillo</div></div>
+  <div class="step-line"></div>
+  <div class="step-item" data-step="1"><div class="step-dot">🧂</div><div class="step-label">Ingredientes</div></div>
+  <div class="step-line"></div>
+  <div class="step-item" data-step="2"><div class="step-dot">🛒</div><div class="step-label">Carrito</div></div>
+  <div class="step-line"></div>
+  <div class="step-item" data-step="3"><div class="step-dot">👤</div><div class="step-label">Datos</div></div>
+  <div class="step-line"></div>
+  <div class="step-item" data-step="4"><div class="step-dot">✅</div><div class="step-label">Confirmar</div></div>
+</nav>
+
+<!-- ══════════ PASO 0: PLATILLO ══════════ -->
+<div class="panel active" id="panel-0">
+  <p class="panel-title">¿Qué vas a pedir? 🌮</p>
+
+  <div class="platillo-grid">
+    <div class="platillo-card" data-id="taco-maiz" data-nombre="Tacos Asada (Maíz)" data-precio="150" data-tipo="tacos">
+      <img src="img_tacos_maiz.jpg" alt="Tacos Maíz" onerror="this.style.display='none'"/>
+      <div class="pinfo">
+        <div class="pnom">Tacos Asada Tortilla Maíz</div>
+        <div class="ppric">$150 · orden de 5</div>
+      </div>
+    </div>
+    <div class="platillo-card" data-id="taco-harina" data-nombre="Tacos Asada (Harina)" data-precio="150" data-tipo="tacos">
+      <img src="img_tacos_harina.jpg" alt="Tacos Harina" onerror="this.style.display='none'"/>
+      <div class="pinfo">
+        <div class="pnom">Tacos Asada Tortilla Harina</div>
+        <div class="ppric">$150 · orden de 5</div>
+      </div>
+    </div>
+    <div class="platillo-card" data-id="sincronizada" data-nombre="Sincronizada de Asada" data-precio="180" data-tipo="sinc">
+      <img src="img_sincronizada.jpg" alt="Sincronizada" onerror="this.style.display='none'"/>
+      <div class="pinfo">
+        <div class="pnom">Sincronizada de Asada</div>
+        <div class="ppric">$180</div>
+      </div>
+    </div>
+    <div class="platillo-card" data-id="hamburguesa" data-nombre="Hamburguesa de Sirlón" data-precio="150" data-tipo="burger">
+      <img src="img_hamburguesa.jpg" alt="Hamburguesa" onerror="this.style.display='none'"/>
+      <div class="pinfo">
+        <div class="pnom">Hamburguesa de Sirlón</div>
+        <div class="ppric">$150</div>
+      </div>
+    </div>
+    <div class="platillo-card" data-id="frijoles" data-nombre="Frijoles Charros" data-precio="25" data-tipo="extra">
+      <img src="img_frijoles.jpg" alt="Frijoles Charros" onerror="this.style.display='none'"/>
+      <div class="pinfo">
+        <div class="pnom">Frijoles Charros</div>
+        <div class="ppric">$25 · el vasito</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cantidad-label">¿Cuántas órdenes?</div>
+  <div class="cantidad-row">
+    <button class="qty-btn" id="qtyMinus">−</button>
+    <div class="qty-num" id="qtyNum">1</div>
+    <button class="qty-btn" id="qtyPlus">+</button>
+  </div>
+
+  <button class="btn-nav btn-primary" id="btn0next">Personalizar ingredientes →</button>
+</div>
+
+<!-- ══════════ PASO 1: INGREDIENTES ══════════ -->
+<div class="panel" id="panel-1">
+  <p class="panel-title" id="ing-titulo">Arma tu taco 🌮</p>
+
+  <!-- INFO sincronizada -->
+  <div class="opcion-grupo" id="grupo-info-sinc">
+    <div style="background:#1e2a00;border:1.5px solid #4a7c00;border-radius:10px;padding:0.9rem 1rem;">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:1.05rem;color:#a8d800;letter-spacing:0.06em;margin-bottom:0.4rem;">✅ Viene preparada con:</div>
+      <div style="font-size:0.85rem;color:#ccc;line-height:1.7;">🫘 Frijoles &nbsp;·&nbsp; 🧀 Queso &nbsp;·&nbsp; 🥩 Carne Asada</div>
+    </div>
+  </div>
+
+  <!-- TORTILLA solo tacos -->
+  <div class="opcion-grupo" id="grupo-tortilla">
+    <div class="opcion-titulo">🫓 Tipo de tortilla</div>
+    <div class="opcion-chips">
+      <div class="chip radio sel" data-group="tortilla" data-val="Maíz">🌽 Maíz</div>
+      <div class="chip radio" data-group="tortilla" data-val="Harina">🫓 Harina</div>
+    </div>
+  </div>
+
+  <!-- SALSA tacos, sinc, burger -->
+  <div class="opcion-grupo" id="grupo-salsa">
+    <div class="opcion-titulo">🌶️ Salsa <span style="font-size:0.75rem;color:#777;font-family:'Nunito',sans-serif;">(elige una)</span></div>
+    <div class="opcion-chips" id="chips-salsa">
+      <div class="chip radio" data-group="salsa" data-val="Salsa Verde">🟢 Verde</div>
+      <div class="chip radio" data-group="salsa" data-val="Salsa Roja">🔴 Roja</div>
+      <div class="chip radio" data-group="salsa" data-val="Ambas salsas">🟢🔴 Ambas</div>
+      <div class="chip radio" data-group="salsa" data-val="Sin salsa">❌ Sin salsa</div>
+    </div>
+  </div>
+
+  <!-- COMPLEMENTOS TACOS -->
+  <div class="opcion-grupo" id="grupo-taco-comp">
+    <div class="opcion-titulo">🧅 Complementos incluidos</div>
+    <div class="opcion-chips">
+      <div class="chip sel nodrop" data-val="">🍅 Pico de Gallo</div>
+      <div class="chip sel" data-val="Cebolla">🧅 Cebolla</div>
+      <div class="chip sel" data-val="Cilantro">🌿 Cilantro</div>
+      <div class="chip sel" data-val="Limón">🍋 Limón</div>
+      <div class="chip" data-val="Aguacate">🥑 Aguacate</div>
+    </div>
+    <div class="opcion-titulo" style="margin-top:0.9rem;">➕ Extra con costo</div>
+    <div class="opcion-chips">
+      <div class="chip extra-chip" data-val="Queso" data-costo="25">🧀 Queso <span style="color:var(--dorado);">+$25</span></div>
+    </div>
+  </div>
+
+  <!-- HAMBURGUESA -->
+  <div class="opcion-grupo" id="grupo-burger">
+    <div class="opcion-titulo">🍔 Ingredientes</div>
+    <div class="opcion-chips" id="chips-burger">
+      <div class="chip sel" data-val="Lechuga">🥬 Lechuga</div>
+      <div class="chip sel" data-val="Jitomate">🍅 Jitomate</div>
+      <div class="chip sel" data-val="Cebolla">🧅 Cebolla</div>
+      <div class="chip sel" data-val="Queso">🧀 Queso</div>
+      <div class="chip" data-val="Jalapeño">🌶️ Jalapeño</div>
+      <div class="chip" data-val="Tocino">🥓 Tocino</div>
+    </div>
+  </div>
+
+  <!-- FRIJOLES CHARROS -->
+  <div class="opcion-grupo" id="grupo-frijoles">
+    <div style="background:#1e2a00;border:1.5px solid #4a7c00;border-radius:10px;padding:0.9rem 1rem;margin-bottom:0.8rem;">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:1.05rem;color:#a8d800;letter-spacing:0.06em;margin-bottom:0.4rem;">✅ Incluye siempre:</div>
+      <div style="font-size:0.85rem;color:#ccc;">🍅 Pico de Gallo</div>
+    </div>
+    <div class="opcion-titulo">➕ Extra con costo</div>
+    <div class="opcion-chips">
+      <div class="chip extra-chip" data-val="Carne" data-costo="25">🥩 Carne <span style="color:var(--dorado);">+$25</span></div>
+    </div>
+  </div>
+
+  <!-- SUBTOTAL EXTRAS -->
+  <div id="extras-subtotal" style="display:none;text-align:right;margin:0.3rem 0 0.5rem;">
+    <span style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:var(--dorado);" id="extras-subtotal-txt"></span>
+  </div>
+
+  <div class="opcion-grupo">
+    <div class="opcion-titulo">📝 Nota especial (opcional)</div>
+    <textarea class="nota-field" id="nota-platillo" placeholder="Ej: Sin picante, extra carne, bien dorado..."></textarea>
+  </div>
+
+  <button class="btn-nav btn-primary" id="btn1agregar">➕ Agregar al carrito</button>
+  <button class="btn-nav btn-secondary" style="margin-top:0.5rem" onclick="goTo(0)">← Cambiar platillo</button>
+</div>
+
+<!-- ══════════ PASO 2: CARRITO ══════════ -->
+<div class="panel" id="panel-2">
+  <p class="panel-title">🛒 Tu Carrito</p>
+  <div id="carrito-lista"></div>
+  <div class="carrito-total" id="carrito-total"></div>
+  <button class="btn-nav btn-primary" id="btn2next">Continuar con mis datos →</button>
+  <button class="btn-nav btn-secondary" style="margin-top:0.5rem" onclick="goTo(0)">➕ Agregar otro platillo</button>
+</div>
+
+<!-- ══════════ PASO 3: DATOS ══════════ -->
+<div class="panel" id="panel-3">
+  <p class="panel-title">👤 Tus Datos</p>
+  <div class="campo">
+    <label>Nombre completo *</label>
+    <input type="text" id="cli-nombre" placeholder="¿Cómo te llamas?" />
+  </div>
+  <div class="campo">
+    <label>Teléfono *</label>
+    <input type="tel" id="cli-tel" placeholder="Tu número de celular" />
+  </div>
+
+  <div class="opcion-titulo" style="margin-bottom:0.7rem;">🚗 ¿Cómo lo recibes?</div>
+  <div class="entrega-opciones">
+    <div class="entrega-opt sel" id="opt-domicilio" onclick="setEntrega('domicilio')">
+      <span class="eo-icon">🏠</span><div class="eo-txt">A domicilio</div>
+    </div>
+    <div class="entrega-opt" id="opt-local" onclick="setEntrega('local')">
+      <span class="eo-icon">🏪</span><div class="eo-txt">Recoger en local</div>
+    </div>
+  </div>
+  <div class="campo" id="campo-direccion">
+    <label>Dirección de entrega *</label>
+    <textarea id="cli-dir" placeholder="Calle, número, colonia, referencias..."></textarea>
+  </div>
+
+  <button class="btn-nav btn-primary" id="btn3next">Ver resumen del pedido →</button>
+  <button class="btn-nav btn-secondary" style="margin-top:0.5rem" onclick="goTo(2)">← Volver al carrito</button>
+</div>
+
+<!-- ══════════ PASO 4: CONFIRMAR ══════════ -->
+<div class="panel" id="panel-4">
+  <p class="panel-title">✅ Confirma tu Pedido</p>
+  <div class="resumen-header" id="resumen-cliente"></div>
+  <div id="resumen-items"></div>
+  <div class="carrito-total" id="resumen-total"></div>
+  <button class="btn-nav btn-wa" id="btn-whatsapp">📱 Enviar pedido por WhatsApp</button>
+  <button class="btn-nav btn-secondary" style="margin-top:0.8rem" onclick="goTo(3)">← Editar datos</button>
+  <p style="text-align:center;font-size:0.75rem;color:#555;margin-top:1rem;">Se abrirá WhatsApp con tu pedido listo · 899 167 22 38</p>
+</div>
+
+<script>
+  const carrito = [];
+  let currentPlatillo = null;
+  let cantidad = 1;
+  let entregaTipo = 'domicilio';
+
+  const PLATILLOS = {
+    'taco-maiz':    { nombre:'Tacos de Asada (Maíz)',    precio:150, tipo:'tacos' },
+    'taco-harina':  { nombre:'Tacos de Asada (Harina)',  precio:150, tipo:'tacos' },
+    'sincronizada': { nombre:'Sincronizada de Asada',    precio:180, tipo:'sinc'  },
+    'hamburguesa':  { nombre:'Hamburguesa de Sirlón',    precio:150, tipo:'burger'},
+    'frijoles':     { nombre:'Frijoles Charros',         precio:25,  tipo:'extra' },
+  };
+
+  function goTo(step) {
+    document.querySelectorAll('.panel').forEach((p,i) => p.classList.toggle('active', i===step));
+    document.querySelectorAll('.step-item').forEach((s,i) => {
+      s.classList.toggle('active', i===step);
+      s.classList.toggle('done', i<step);
+    });
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  // seleccionar platillo
+  document.querySelectorAll('.platillo-card').forEach(card => {
+    card.addEventListener('click', () => {
+      document.querySelectorAll('.platillo-card').forEach(c => c.classList.remove('sel'));
+      card.classList.add('sel');
+      currentPlatillo = card.dataset.id;
+    });
+  });
+
+  document.getElementById('qtyMinus').addEventListener('click', () => { if(cantidad>1) cantidad--; document.getElementById('qtyNum').textContent=cantidad; actualizarExtrasSubtotal(); });
+  document.getElementById('qtyPlus').addEventListener('click',  () => { cantidad++; document.getElementById('qtyNum').textContent=cantidad; actualizarExtrasSubtotal(); });
+
+  document.getElementById('btn0next').addEventListener('click', () => {
+    if(!currentPlatillo){ alert('Elige un platillo primero 🌮'); return; }
+    setupIngredientes();
+    goTo(1);
+  });
+
+  function hide(id){ document.getElementById(id).style.display='none'; }
+  function show(id){ document.getElementById(id).style.display='block'; }
+
+  function setupIngredientes() {
+    const p = PLATILLOS[currentPlatillo];
+    const titulos = { tacos:'Arma tus tacos 🌮', sinc:'Tu sincronizada 🧀', burger:'Arma tu hamburguesa 🍔', extra:'Tus frijoles charros 🫘' };
+    document.getElementById('ing-titulo').textContent = titulos[p.tipo] || 'Personaliza tu orden';
+
+    const esTaco   = p.tipo === 'tacos';
+    const esBurger = p.tipo === 'burger';
+    const esExtra  = p.tipo === 'extra';
+    const esSinc   = p.tipo === 'sinc';
+
+    // mostrar/ocultar grupos según platillo
+    esSinc   ? show('grupo-info-sinc')  : hide('grupo-info-sinc');
+    esTaco   ? show('grupo-tortilla')   : hide('grupo-tortilla');
+    (!esExtra) ? show('grupo-salsa')    : hide('grupo-salsa');
+    esTaco   ? show('grupo-taco-comp')  : hide('grupo-taco-comp');
+    esBurger ? show('grupo-burger')     : hide('grupo-burger');
+    esExtra  ? show('grupo-frijoles')   : hide('grupo-frijoles');
+
+    // reset extras
+    document.querySelectorAll('.extra-chip').forEach(c => c.classList.remove('sel'));
+    // reset salsa
+    document.querySelectorAll('[data-group="salsa"]').forEach(c => c.classList.remove('sel'));
+
+    if(esTaco){
+      document.querySelectorAll('[data-group="tortilla"]').forEach(c => {
+        c.classList.toggle('sel', c.dataset.val === (currentPlatillo==='taco-harina' ? 'Harina':'Maíz'));
+      });
+    }
+    document.getElementById('nota-platillo').value='';
+    document.getElementById('extras-subtotal').style.display='none';
+  }
+
+  // chips toggle
+  document.querySelectorAll('.chip').forEach(chip => {
+    if(chip.classList.contains('nodrop')) return; // pico de gallo fijo
+    chip.addEventListener('click', () => {
+      if(chip.dataset.group){
+        // radio
+        document.querySelectorAll(`[data-group="${chip.dataset.group}"]`).forEach(c=>c.classList.remove('sel'));
+        chip.classList.add('sel');
+      } else if(chip.classList.contains('extra-chip')){
+        chip.classList.toggle('sel');
+        actualizarExtrasSubtotal();
+      } else {
+        chip.classList.toggle('sel');
+      }
+    });
+  });
+
+  function actualizarExtrasSubtotal(){
+    const extras = [...document.querySelectorAll('.extra-chip.sel')];
+    const costoExtras = extras.reduce((s,c)=>s+parseInt(c.dataset.costo||0),0);
+    const p = currentPlatillo ? PLATILLOS[currentPlatillo] : null;
+    if(!p) return;
+    const subtotal = (p.precio + costoExtras) * cantidad;
+    const div = document.getElementById('extras-subtotal');
+    const txt = document.getElementById('extras-subtotal-txt');
+    if(costoExtras > 0){
+      div.style.display='block';
+      txt.textContent = `Subtotal: $${subtotal} (incluye +$${costoExtras*cantidad} extras)`;
+    } else {
+      div.style.display='none';
+    }
+  }
+
+  document.getElementById('btn1agregar').addEventListener('click', () => {
+    const p = PLATILLOS[currentPlatillo];
+    const salsa      = document.querySelector('[data-group="salsa"].sel')?.dataset.val || '';
+    const burgerExts = [...document.querySelectorAll('#chips-burger .chip.sel')].map(c=>c.dataset.val);
+    const tortilla   = document.querySelector('[data-group="tortilla"].sel')?.dataset.val || '';
+    const nota       = document.getElementById('nota-platillo').value.trim();
+    const extras     = [...document.querySelectorAll('.extra-chip.sel')];
+    const costoExtras = extras.reduce((s,c)=>s+parseInt(c.dataset.costo||0),0);
+
+    const ingredientes = [];
+
+    if(p.tipo==='tacos'){
+      ingredientes.push('Tortilla: '+tortilla);
+      ingredientes.push('Pico de Gallo');
+      // complementos opcionales
+      [...document.querySelectorAll('#grupo-taco-comp .chip.sel:not(.nodrop):not(.extra-chip)')].forEach(c=>{ if(c.dataset.val) ingredientes.push(c.dataset.val); });
+      if(salsa) ingredientes.push(salsa);
+      extras.forEach(c=>ingredientes.push(c.dataset.val+' (+$'+c.dataset.costo+')'));
+    } else if(p.tipo==='sinc'){
+      ingredientes.push('Frijoles', 'Queso', 'Carne Asada');
+      if(salsa) ingredientes.push(salsa);
+    } else if(p.tipo==='burger'){
+      burgerExts.forEach(v=>ingredientes.push(v));
+      if(salsa) ingredientes.push(salsa);
+    } else if(p.tipo==='extra'){
+      ingredientes.push('Pico de Gallo');
+      extras.forEach(c=>ingredientes.push(c.dataset.val+' (+$'+c.dataset.costo+')'));
+    }
+
+    if(nota) ingredientes.push('📝 '+nota);
+
+    const precioFinal = p.precio + costoExtras;
+    carrito.push({ id:Date.now(), nombre:p.nombre, precio:precioFinal, cantidad, ingredientes, total:precioFinal*cantidad });
+    renderCarrito();
+    cantidad=1; document.getElementById('qtyNum').textContent='1';
+    currentPlatillo=null;
+    document.querySelectorAll('.platillo-card').forEach(c=>c.classList.remove('sel'));
+    goTo(2);
+  });
+
+  function renderCarrito(){
+    const lista=document.getElementById('carrito-lista');
+    if(!carrito.length){
+      lista.innerHTML='<div class="carrito-vacio"><span class="big">🛒</span>Tu carrito está vacío</div>';
+      document.getElementById('carrito-total').textContent='';
+      return;
+    }
+    lista.innerHTML=carrito.map(item=>`
+      <div class="item-carrito">
+        <button class="ic-del" onclick="eliminarItem(${item.id})">✕</button>
+        <div class="ic-nombre">${item.nombre} × ${item.cantidad}</div>
+        <div class="ic-detalle">${item.ingredientes.join(' · ')||'Sin extras'}</div>
+        <div class="ic-precio">$${item.total}</div>
+      </div>`).join('');
+    const total=carrito.reduce((s,i)=>s+i.total,0);
+    document.getElementById('carrito-total').textContent=`Total: $${total}`;
+  }
+
+  function eliminarItem(id){
+    const idx=carrito.findIndex(i=>i.id===id);
+    if(idx>-1) carrito.splice(idx,1);
+    renderCarrito();
+  }
+
+  document.getElementById('btn2next').addEventListener('click',()=>{
+    if(!carrito.length){alert('Agrega al menos un platillo 🌮');return;}
+    goTo(3);
+  });
+
+  function setEntrega(tipo){
+    entregaTipo=tipo;
+    document.getElementById('opt-domicilio').classList.toggle('sel',tipo==='domicilio');
+    document.getElementById('opt-local').classList.toggle('sel',tipo==='local');
+    document.getElementById('campo-direccion').style.display=tipo==='domicilio'?'block':'none';
+  }
+
+  document.getElementById('btn3next').addEventListener('click',()=>{
+    const nombre=document.getElementById('cli-nombre').value.trim();
+    const tel=document.getElementById('cli-tel').value.trim();
+    const dir=document.getElementById('cli-dir').value.trim();
+    if(!nombre){alert('Escribe tu nombre 👤');return;}
+    if(!tel){alert('Escribe tu teléfono 📱');return;}
+    if(entregaTipo==='domicilio'&&!dir){alert('Escribe tu dirección 📍');return;}
+    renderResumen();
+    goTo(4);
+  });
+
+  function renderResumen(){
+    const nombre=document.getElementById('cli-nombre').value.trim();
+    const tel=document.getElementById('cli-tel').value.trim();
+    const dir=document.getElementById('cli-dir').value.trim();
+    document.getElementById('resumen-cliente').innerHTML=`
+      <div class="resumen-titulo">📋 Datos del cliente</div>
+      <div class="resumen-dato">
+        👤 <b>${nombre}</b><br>📱 ${tel}<br>
+        ${entregaTipo==='domicilio'?'🏠 Entrega a domicilio: '+dir:'🏪 Recoger en local'}
+      </div>`;
+    document.getElementById('resumen-items').innerHTML=carrito.map(item=>`
+      <div class="item-carrito">
+        <div class="ic-nombre">${item.nombre} × ${item.cantidad}</div>
+        <div class="ic-detalle">${item.ingredientes.join(' · ')||'Sin extras'}</div>
+        <div class="ic-precio">$${item.total}</div>
+      </div>`).join('');
+    const total=carrito.reduce((s,i)=>s+i.total,0);
+    document.getElementById('resumen-total').textContent=`Total: $${total}`;
+  }
+
+  document.getElementById('btn-whatsapp').addEventListener('click',()=>{
+    const nombre=document.getElementById('cli-nombre').value.trim();
+    const tel=document.getElementById('cli-tel').value.trim();
+    const dir=document.getElementById('cli-dir').value.trim();
+    const total=carrito.reduce((s,i)=>s+i.total,0);
+    let msg=`🌮 *PEDIDO - TACO'N VILLA*\n`;
+    msg+=`━━━━━━━━━━━━━━━━━━\n`;
+    msg+=`👤 *Cliente:* ${nombre}\n📱 *Tel:* ${tel}\n`;
+    msg+=entregaTipo==='domicilio'?`🏠 *Entrega:* ${dir}\n`:`🏪 *Recoger en local*\n`;
+    msg+=`━━━━━━━━━━━━━━━━━━\n📋 *PLATILLOS:*\n\n`;
+    carrito.forEach((item,i)=>{
+      msg+=`${i+1}. *${item.nombre}* × ${item.cantidad} = $${item.total}\n`;
+      if(item.ingredientes.length) msg+=`   └ ${item.ingredientes.join(', ')}\n`;
+      msg+='\n';
+    });
+    msg+=`━━━━━━━━━━━━━━━━━━\n💵 *TOTAL: $${total}*\n`;
+    msg+=`━━━━━━━━━━━━━━━━━━\n_Pedido desde Taco'N Villa_`;
+    window.open(`https://wa.me/528991672238?text=${encodeURIComponent(msg)}`,'_blank');
+  });
+
+  renderCarrito();
+</script>
+</body>
+</html>
