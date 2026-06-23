@@ -185,16 +185,24 @@
     .platillo-grid { display:grid; grid-template-columns:1fr 1fr; gap:0.9rem; margin-bottom:1.5rem; }
     .platillo-card {
       background:var(--gris); border:2px solid var(--gris3); border-radius:14px;
-      overflow:hidden; cursor:pointer; transition:all 0.2s;
+      overflow:hidden; cursor:pointer;
       display:flex; flex-direction:column;
+      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
     }
-    .platillo-card:hover  { border-color:var(--naranja); transform:translateY(-2px); }
-    .platillo-card.sel    { border-color:var(--dorado); background:#1e1000; }
+    .platillo-card:hover {
+      border-color:var(--naranja);
+      transform: translateY(-6px) scale(1.02);
+      box-shadow: 0 12px 28px rgba(230,126,34,0.35);
+    }
+    .platillo-card.sel {
+      border-color:var(--dorado); background:#1e1000;
+      box-shadow: 0 0 20px rgba(241,196,15,0.4);
+    }
     .platillo-card img {
-      width:100%; height:120px; object-fit:cover;
-      transition: transform 0.3s;
+      width:100%; height:180px; object-fit:cover;
+      transition: transform 0.4s ease;
     }
-    .platillo-card:hover img { transform: scale(1.05); }
+    .platillo-card:hover img { transform: scale(1.08); }
     .platillo-card .pinfo { padding:0.7rem 0.7rem 0.8rem; }
     .platillo-card .pnom {
       font-family:'Bebas Neue',sans-serif; font-size:1.05rem;
