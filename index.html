@@ -314,10 +314,55 @@
 
     .oculto { display:none !important; }
 
-    @media (max-width:400px) {
-      .platillo-grid { grid-template-columns:1fr; }
-      .step-line { width:14px; }
-      .titulo-fuego { font-size: 3rem; }
+    /* ── RESPONSIVE ── */
+
+    /* Laptop grande (1024px+) */
+    @media (min-width:1024px) {
+      .panel { max-width: 900px; }
+      .platillo-grid { grid-template-columns: repeat(3, 1fr); gap: 1.2rem; }
+      .platillo-card img { height: 200px; }
+      .panel-title { font-size: 2.4rem; }
+      .titulo-fuego { font-size: 6rem; }
+      .steps-nav { gap: 0.5rem; }
+      .step-line { width: 40px; }
+    }
+
+    /* Tablet (600px - 1023px) */
+    @media (min-width:600px) and (max-width:1023px) {
+      .panel { max-width: 680px; }
+      .platillo-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+      .platillo-card img { height: 180px; }
+      .panel-title { font-size: 2.2rem; }
+      .titulo-fuego { font-size: 4.5rem; }
+      .step-line { width: 30px; }
+      .opcion-chips { gap: 0.6rem; }
+      .chip { font-size: 0.88rem; padding: 0.4rem 1rem; }
+    }
+
+    /* Celular grande (400px - 599px) */
+    @media (min-width:400px) and (max-width:599px) {
+      .platillo-grid { grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
+      .platillo-card img { height: 150px; }
+      .titulo-fuego { font-size: 3.5rem; }
+      .step-line { width: 18px; }
+      .step-label { font-size: 0.58rem; }
+    }
+
+    /* Celular pequeño (menos de 400px) */
+    @media (max-width:399px) {
+      .platillo-grid { grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
+      .platillo-card img { height: 120px; }
+      .platillo-card .pnom { font-size: 0.88rem; }
+      .platillo-card .ppric { font-size: 0.75rem; }
+      .titulo-fuego { font-size: 2.8rem; }
+      .step-line { width: 10px; }
+      .step-label { font-size: 0.55rem; }
+      .step-dot { width: 30px; height: 30px; font-size: 0.85rem; }
+      .panel-title { font-size: 1.6rem; }
+      .chip { font-size: 0.78rem; padding: 0.3rem 0.7rem; }
+      .btn-nav { font-size: 1rem; }
+      .qty-num { font-size: 1.8rem; }
+      .carrito-total { font-size: 1.4rem; }
     }
   </style>
 </head>
