@@ -105,21 +105,23 @@
       font-family: 'Bebas Neue', sans-serif;
       font-size: clamp(3.5rem, 16vw, 7rem);
       letter-spacing: 0.12em;
-      background: linear-gradient(180deg, #fff9c4 0%, #ffd700 30%, #ff8c00 65%, #c0392b 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      filter: drop-shadow(0 0 14px rgba(255,100,0,0.7));
+      color: #ffffff;
+      -webkit-text-stroke: 2px #ff6a00;
+      text-shadow:
+        0 0 20px rgba(255,106,0,0.9),
+        0 0 40px rgba(255,106,0,0.5),
+        3px 3px 0px #7a1500;
     }
     .titulo-bottom {
       font-family: 'Pacifico', cursive;
       font-size: clamp(2.8rem, 13vw, 5.5rem);
       letter-spacing: 0.06em;
-      background: linear-gradient(180deg, #ffd700 0%, #ff8c00 50%, #c0392b 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      filter: drop-shadow(0 2px 16px rgba(255,69,0,0.8));
+      color: #ffffff;
+      -webkit-text-stroke: 1.5px #c0392b;
+      text-shadow:
+        0 0 20px rgba(192,57,43,0.9),
+        0 0 40px rgba(192,57,43,0.5),
+        3px 3px 0px #5a0a00;
       margin-top: -0.2rem;
     }
     @keyframes glow-pulse {
@@ -153,11 +155,17 @@
     .subtitulo-cursiva {
       position: relative; z-index: 2;
       font-family: 'Pacifico', cursive;
-      font-size: clamp(1rem, 4vw, 1.5rem);
-      color: var(--dorado);
-      letter-spacing: 0.02em;
-      text-shadow: 0 2px 12px rgba(0,0,0,0.9), 0 0 20px rgba(255,140,0,0.5);
-      margin-top: 0.2rem;
+      font-size: clamp(1rem, 4vw, 1.4rem);
+      color: #ffffff;
+      letter-spacing: 0.04em;
+      text-shadow:
+        0 0 12px rgba(0,0,0,1),
+        0 0 24px rgba(0,0,0,0.9),
+        1px 1px 0 #000,
+        -1px -1px 0 #000,
+        1px -1px 0 #000,
+        -1px 1px 0 #000;
+      margin-top: 0.5rem;
     }
 
     .estilo-badge {
@@ -471,7 +479,7 @@
       <div class="titulo-top">TACO'N</div>
       <div class="titulo-bottom">VILLA</div>
     </div>
-    <div class="subtitulo-cursiva">Tacos de Carne Asada</div>
+    <div class="subtitulo-cursiva">Pura carne, puro sabor, pura tradición</div>
     <div class="estilo-badge">🌶️ Estilo China, Nuevo León</div>
   </div>
 </header>
@@ -550,6 +558,14 @@
         <div class="ppric">$25 · el vasito</div>
       </div>
     </div>
+
+    <div class="platillo-card" data-id="bebida" data-nombre="Bebida" data-precio="20" data-tipo="bebida">
+      <img src="img_bebidas.jpg" alt="Bebidas" onerror="this.style.display='none'"/>
+      <div class="pinfo">
+        <div class="pnom">Bebidas 500ml</div>
+        <div class="ppric">Refrescos $20 · Agua $15</div>
+      </div>
+    </div>
   </div>
 
   <div class="cantidad-label">¿Cuántas órdenes?</div>
@@ -621,6 +637,20 @@
       <div class="chip" data-val="Jalapeño">🌶️ Jalapeño</div>
       <div class="chip" data-val="Tocino">🥓 Tocino</div>
     </div>
+  </div>
+
+  <!-- BEBIDAS -->
+  <div class="opcion-grupo" id="grupo-bebidas">
+    <div class="opcion-titulo">🥤 Elige tu bebida</div>
+    <div class="opcion-chips" id="chips-bebidas">
+      <div class="chip radio" data-group="bebida" data-val="Coca Cola" data-precio-beb="20">🥤 Coca Cola</div>
+      <div class="chip radio" data-group="bebida" data-val="Joya Manzana" data-precio-beb="20">🍏 Joya Manzana</div>
+      <div class="chip radio" data-group="bebida" data-val="Joya Durazno" data-precio-beb="20">🍑 Joya Durazno</div>
+      <div class="chip radio" data-group="bebida" data-val="Sprite" data-precio-beb="20">💚 Sprite</div>
+      <div class="chip radio" data-group="bebida" data-val="Fanta Naranja" data-precio-beb="20">🍊 Fanta Naranja</div>
+      <div class="chip radio" data-group="bebida" data-val="Agua 500ml" data-precio-beb="15">💧 Agua $15</div>
+    </div>
+    <div style="margin-top:0.6rem; font-size:0.78rem; color:#777;">Refrescos $20 · Agua $15 · 500ml</div>
   </div>
 
   <!-- FRIJOLES CHARROS -->
@@ -763,6 +793,7 @@
     'sincronizada': { nombre:'Sincronizada de Asada',    precio:180, tipo:'sinc'  },
     'hamburguesa':  { nombre:'Hamburguesa de Sirlón',    precio:150, tipo:'burger'},
     'frijoles':     { nombre:'Frijoles Charros',         precio:25,  tipo:'extra' },
+    'bebida':       { nombre:'Bebida',                    precio:20,  tipo:'bebida' },
   };
 
   function goTo(step) {
@@ -797,7 +828,7 @@
 
   function setupIngredientes() {
     const p = PLATILLOS[currentPlatillo];
-    const titulos = { tacos:'Arma tus tacos 🌮', sinc:'Tu sincronizada 🧀', burger:'Arma tu hamburguesa 🍔', extra:'Tus frijoles charros 🫘' };
+    const titulos = { tacos:'Arma tus tacos 🌮', sinc:'Tu sincronizada 🧀', burger:'Arma tu hamburguesa 🍔', extra:'Tus frijoles charros 🫘', bebida:'Elige tu bebida 🥤' };
     document.getElementById('ing-titulo').textContent = titulos[p.tipo] || 'Personaliza tu orden';
 
     const esTaco   = p.tipo === 'tacos';
@@ -808,10 +839,11 @@
     // mostrar/ocultar grupos según platillo
     esSinc   ? show('grupo-info-sinc')  : hide('grupo-info-sinc');
     esTaco   ? show('grupo-tortilla')   : hide('grupo-tortilla');
-    (!esExtra) ? show('grupo-salsa')    : hide('grupo-salsa');
-    esTaco   ? show('grupo-taco-comp')  : hide('grupo-taco-comp');
+    (!esExtra && p.tipo!=='bebida') ? show('grupo-salsa') : hide('grupo-salsa');
+    (esTaco) ? show('grupo-taco-comp')  : hide('grupo-taco-comp');
     esBurger ? show('grupo-burger')     : hide('grupo-burger');
     esExtra  ? show('grupo-frijoles')   : hide('grupo-frijoles');
+    p.tipo==='bebida' ? show('grupo-bebidas') : hide('grupo-bebidas');
 
     // reset extras
     document.querySelectorAll('.extra-chip').forEach(c => c.classList.remove('sel'));
@@ -887,6 +919,21 @@
     } else if(p.tipo==='extra'){
       ingredientes.push('Pico de Gallo');
       extras.forEach(c=>ingredientes.push(c.dataset.val+' (+$'+c.dataset.costo+')'));
+    } else if(p.tipo==='bebida'){
+      const bebSel = document.querySelector('[data-group="bebida"].sel');
+      if(!bebSel){ alert('Elige una bebida 🥤'); return; }
+      const precioBeb = parseInt(bebSel.dataset.precioBeb||20);
+      // ajustar precio según bebida seleccionada
+      ingredientes.push(bebSel.dataset.val);
+      // actualizar precio en carrito
+      carrito.push({ id:Date.now(), nombre:'Bebida: '+bebSel.dataset.val, precio:precioBeb, cantidad, ingredientes:[], total:precioBeb*cantidad });
+      renderCarrito();
+      cantidad=1; document.getElementById('qtyNum').textContent='1';
+      currentPlatillo=null;
+      document.querySelectorAll('.platillo-card').forEach(c=>c.classList.remove('sel'));
+      document.querySelectorAll('[data-group="bebida"]').forEach(c=>c.classList.remove('sel'));
+      goTo(2);
+      return;
     }
 
     if(nota) ingredientes.push('📝 '+nota);
