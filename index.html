@@ -64,15 +64,63 @@
       100% { transform: scaleX(1.1) skewX(5deg)  scaleY(1.08); }
     }
 
-    /* logo */
+    /* logo bg difuminado */
+    .logo-bg-blur {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 420px; height: 420px;
+      z-index: 0; pointer-events: none;
+    }
+    .logo-bg-blur img {
+      width: 100%; height: 100%; object-fit: contain;
+      opacity: 0.12;
+      filter: blur(18px) saturate(1.5);
+    }
+
+    /* contenido del header */
+    .header-content {
+      position: relative; z-index: 2;
+      display: flex; flex-direction: column;
+      align-items: center; padding-top: 1.8rem;
+    }
+
+    /* logo pequeño */
     .logo-wrap {
       position: relative; z-index: 2;
-      padding-top: 1.8rem;
     }
     .logo-wrap img {
       width: 130px; height: 130px; object-fit: contain;
       filter: drop-shadow(0 0 22px rgba(255,140,0,0.9));
       animation: glow-pulse 2.5s ease-in-out infinite;
+    }
+
+    /* título doble línea */
+    .titulo-wrap {
+      line-height: 0.85;
+      text-align: center;
+      margin-top: 0.4rem;
+    }
+    .titulo-top {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3.5rem, 16vw, 7rem);
+      letter-spacing: 0.12em;
+      background: linear-gradient(180deg, #fff9c4 0%, #ffd700 30%, #ff8c00 65%, #c0392b 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 0 14px rgba(255,100,0,0.7));
+    }
+    .titulo-bottom {
+      font-family: 'Pacifico', cursive;
+      font-size: clamp(2.8rem, 13vw, 5.5rem);
+      letter-spacing: 0.06em;
+      background: linear-gradient(180deg, #ffd700 0%, #ff8c00 50%, #c0392b 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 2px 16px rgba(255,69,0,0.8));
+      margin-top: -0.2rem;
     }
     @keyframes glow-pulse {
       0%,100% { filter: drop-shadow(0 0 14px rgba(241,196,15,0.6)); }
@@ -329,7 +377,7 @@
       .platillo-card:last-child:nth-child(3n+1) { grid-column: 2; }
       .platillo-card img { height: 220px; }
       .panel-title { font-size: 2.6rem; }
-      .titulo-fuego { font-size: 6.5rem; }
+      .titulo-top { font-size: 7rem; } .titulo-bottom { font-size: 5.5rem; }
       .steps-nav { gap: 0.5rem; }
       .step-line { width: 50px; }
       .logo-wrap img { width: 150px; height: 150px; }
@@ -342,7 +390,7 @@
       .platillo-card:last-child:nth-child(3n+1) { grid-column: 2; }
       .platillo-card img { height: 190px; }
       .panel-title { font-size: 2.3rem; }
-      .titulo-fuego { font-size: 5.5rem; }
+      .titulo-top { font-size: 6rem; } .titulo-bottom { font-size: 4.8rem; }
       .step-line { width: 40px; }
     }
 
@@ -352,7 +400,7 @@
       .platillo-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
       .platillo-card img { height: 185px; }
       .panel-title { font-size: 2.2rem; }
-      .titulo-fuego { font-size: 4.5rem; }
+      .titulo-top { font-size: 5rem; } .titulo-bottom { font-size: 4rem; }
       .step-line { width: 30px; }
       .chip { font-size: 0.88rem; padding: 0.4rem 1rem; }
     }
@@ -362,7 +410,7 @@
       .panel { padding: 1rem 1.2rem 6rem; }
       .platillo-grid { grid-template-columns: repeat(2, 1fr); gap: 0.9rem; }
       .platillo-card img { height: 160px; }
-      .titulo-fuego { font-size: 3.8rem; }
+      .titulo-top { font-size: 4.2rem; } .titulo-bottom { font-size: 3.4rem; }
       .step-line { width: 20px; }
     }
 
@@ -371,7 +419,7 @@
       .panel { padding: 1rem 0.9rem 6rem; }
       .platillo-grid { grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
       .platillo-card img { height: 140px; }
-      .titulo-fuego { font-size: 3.2rem; }
+      .titulo-top { font-size: 3.5rem; } .titulo-bottom { font-size: 2.8rem; }
       .step-line { width: 16px; }
       .step-label { font-size: 0.58rem; }
     }
@@ -384,7 +432,7 @@
       .platillo-card .pnom { font-size: 0.85rem; }
       .platillo-card .ppric { font-size: 0.72rem; }
       .platillo-card .pinfo { padding: 0.5rem; }
-      .titulo-fuego { font-size: 2.6rem; }
+      .titulo-top { font-size: 2.8rem; } .titulo-bottom { font-size: 2.2rem; }
       .step-line { width: 8px; }
       .step-label { font-size: 0.52rem; }
       .step-dot { width: 28px; height: 28px; font-size: 0.8rem; }
@@ -401,6 +449,12 @@
 <!-- ══════════ HEADER ══════════ -->
 <header>
   <div class="fire-bg"></div>
+
+  <!-- LOGO DIFUMINADO DE FONDO -->
+  <div class="logo-bg-blur">
+    <img src="logo.jpg" alt="" />
+  </div>
+
   <div class="flames">
     <div class="flame"></div><div class="flame"></div><div class="flame"></div>
     <div class="flame"></div><div class="flame"></div><div class="flame"></div>
@@ -409,14 +463,17 @@
     <div class="flame"></div><div class="flame"></div><div class="flame"></div>
   </div>
 
-  <div class="logo-wrap">
-    <img src="logo.jpg" alt="Taco'N Villa"
-         onerror="this.style.display='none';" />
+  <div class="header-content">
+    <div class="logo-wrap">
+      <img src="logo.jpg" alt="Taco'N Villa" onerror="this.style.display='none';" />
+    </div>
+    <div class="titulo-wrap">
+      <div class="titulo-top">TACO'N</div>
+      <div class="titulo-bottom">VILLA</div>
+    </div>
+    <div class="subtitulo-cursiva">Tacos de Carne Asada</div>
+    <div class="estilo-badge">🌶️ Estilo China, Nuevo León</div>
   </div>
-
-  <div class="titulo-fuego">TACO'N VILLA</div>
-  <div class="subtitulo-cursiva">Tacos de Carne Asada</div>
-  <div class="estilo-badge">🌶️ Estilo China, Nuevo León</div>
 </header>
 
 <!-- WHATSAPP BANNER -->
@@ -606,11 +663,15 @@
   <p class="panel-title">👤 Tus Datos</p>
   <div class="campo">
     <label>Nombre completo *</label>
-    <input type="text" id="cli-nombre" placeholder="¿Cómo te llamas?" />
+    <input type="text" id="cli-nombre" placeholder="¿Cómo te llamas?"
+      oninput="this.value=this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]/g,'')"
+      maxlength="60" autocomplete="name" />
   </div>
   <div class="campo">
     <label>Teléfono *</label>
-    <input type="tel" id="cli-tel" placeholder="Tu número de celular" />
+    <input type="tel" id="cli-tel" placeholder="Tu número de celular (10 dígitos)"
+      oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,10)"
+      maxlength="10" inputmode="numeric" autocomplete="tel" />
   </div>
 
   <div class="opcion-titulo" style="margin-bottom:0.7rem;">🚗 ¿Cómo lo recibes?</div>
@@ -625,6 +686,53 @@
   <div class="campo" id="campo-direccion">
     <label>Dirección de entrega *</label>
     <textarea id="cli-dir" placeholder="Calle, número, colonia, referencias..."></textarea>
+  </div>
+
+  <!-- PAGO -->
+  <div class="campo" style="margin-top:0.5rem;">
+    <label>💳 ¿Cómo vas a pagar?</label>
+    <div class="entrega-opciones">
+      <div class="entrega-opt sel" id="opt-efectivo" onclick="setPago('efectivo')">
+        <span class="eo-icon">💵</span>
+        <div class="eo-txt">Efectivo</div>
+      </div>
+      <div class="entrega-opt" id="opt-transferencia" onclick="setPago('transferencia')">
+        <span class="eo-icon">🏦</span>
+        <div class="eo-txt">Transferencia</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EFECTIVO -->
+  <div id="campo-efectivo">
+    <div class="campo">
+      <label>💰 ¿Con cuánto vas a pagar?</label>
+      <input type="number" id="cli-monto" placeholder="Ej: 200, 500..." min="0" />
+    </div>
+    <div id="cambio-info" style="display:none; background:#1a2a00; border:1.5px solid #4a7c00; border-radius:10px; padding:0.8rem 1rem; margin-bottom:1rem;">
+      <span style="font-family:'Bebas Neue',sans-serif; font-size:1.1rem; color:#a8d800; letter-spacing:0.06em;">💚 Tu cambio será: </span>
+      <span style="font-family:'Bebas Neue',sans-serif; font-size:1.3rem; color:#f1c40f;" id="cambio-monto"></span>
+    </div>
+    <div id="cambio-exacto" style="display:none; background:#1a1a00; border:1.5px solid var(--dorado); border-radius:10px; padding:0.8rem 1rem; margin-bottom:1rem;">
+      <span style="font-family:'Bebas Neue',sans-serif; font-size:1rem; color:var(--dorado); letter-spacing:0.06em;">✅ Pago exacto, ¡gracias!</span>
+    </div>
+    <div id="cambio-insuf" style="display:none; background:#2a0000; border:1.5px solid var(--rojo); border-radius:10px; padding:0.8rem 1rem; margin-bottom:1rem;">
+      <span style="font-family:'Bebas Neue',sans-serif; font-size:1rem; color:#ff6b6b; letter-spacing:0.06em;">⚠️ El monto es menor al total del pedido</span>
+    </div>
+  </div>
+
+  <!-- TRANSFERENCIA -->
+  <div id="campo-transferencia" style="display:none;">
+    <div style="background:#0a1a2a; border:1.5px solid #1a6090; border-radius:12px; padding:1rem 1.2rem; margin-bottom:1rem;">
+      <div style="font-family:'Bebas Neue',sans-serif; font-size:1.1rem; color:#5dade2; letter-spacing:0.08em; margin-bottom:0.8rem;">🏦 Datos para transferencia</div>
+      <div style="font-size:0.85rem; color:#ccc; line-height:2;">
+        🏛️ <b style="color:#fff;">Banco:</b> BBVA Bancomer<br>
+        👤 <b style="color:#fff;">Titular:</b> Taco'N Villa<br>
+        💳 <b style="color:#fff;">Número de tarjeta:</b> <span style="color:var(--dorado); font-family:'Bebas Neue',sans-serif; font-size:1rem; letter-spacing:0.1em;">4152 3141 5926 5358</span><br>
+        🔢 <b style="color:#fff;">CLABE:</b> <span style="color:var(--dorado); font-family:'Bebas Neue',sans-serif; font-size:1rem; letter-spacing:0.1em;">012 580 00415926535 8</span>
+      </div>
+      <div style="margin-top:0.8rem; font-size:0.78rem; color:#888;">⚠️ Envía el comprobante por WhatsApp al 899 167 22 38</div>
+    </div>
   </div>
 
   <button class="btn-nav btn-primary" id="btn3next">Ver resumen del pedido →</button>
@@ -647,6 +755,7 @@
   let currentPlatillo = null;
   let cantidad = 1;
   let entregaTipo = 'domicilio';
+  let pagoTipo = 'efectivo';
 
   const PLATILLOS = {
     'taco-maiz':    { nombre:'Tacos de Asada (Maíz)',    precio:150, tipo:'tacos' },
@@ -827,13 +936,50 @@
     document.getElementById('campo-direccion').style.display=tipo==='domicilio'?'block':'none';
   }
 
+  function setPago(tipo){
+    pagoTipo=tipo;
+    document.getElementById('opt-efectivo').classList.toggle('sel',tipo==='efectivo');
+    document.getElementById('opt-transferencia').classList.toggle('sel',tipo==='transferencia');
+    document.getElementById('campo-efectivo').style.display=tipo==='efectivo'?'block':'none';
+    document.getElementById('campo-transferencia').style.display=tipo==='transferencia'?'block':'none';
+  }
+
+  // calcular cambio en tiempo real
+  document.addEventListener('DOMContentLoaded', () => {
+    const montoInput = document.getElementById('cli-monto');
+    if(montoInput){
+      montoInput.addEventListener('input', () => {
+        const total = carrito.reduce((s,i)=>s+i.total,0);
+        const monto = parseFloat(montoInput.value) || 0;
+        const cambioInfo   = document.getElementById('cambio-info');
+        const cambioExacto = document.getElementById('cambio-exacto');
+        const cambioInsuf  = document.getElementById('cambio-insuf');
+        cambioInfo.style.display='none';
+        cambioExacto.style.display='none';
+        cambioInsuf.style.display='none';
+        if(monto <= 0) return;
+        if(monto > total){
+          document.getElementById('cambio-monto').textContent = '$'+(monto-total);
+          cambioInfo.style.display='block';
+        } else if(monto === total){
+          cambioExacto.style.display='block';
+        } else {
+          cambioInsuf.style.display='block';
+        }
+      });
+    }
+  });
+
   document.getElementById('btn3next').addEventListener('click',()=>{
     const nombre=document.getElementById('cli-nombre').value.trim();
     const tel=document.getElementById('cli-tel').value.trim();
     const dir=document.getElementById('cli-dir').value.trim();
+    const monto=parseFloat(document.getElementById('cli-monto')?.value)||0;
+    const total=carrito.reduce((s,i)=>s+i.total,0);
     if(!nombre){alert('Escribe tu nombre 👤');return;}
     if(!tel){alert('Escribe tu teléfono 📱');return;}
     if(entregaTipo==='domicilio'&&!dir){alert('Escribe tu dirección 📍');return;}
+    if(pagoTipo==='efectivo'&&monto>0&&monto<total){alert('El monto es menor al total del pedido 💵');return;}
     renderResumen();
     goTo(4);
   });
@@ -842,11 +988,18 @@
     const nombre=document.getElementById('cli-nombre').value.trim();
     const tel=document.getElementById('cli-tel').value.trim();
     const dir=document.getElementById('cli-dir').value.trim();
+    const monto = parseFloat(document.getElementById('cli-monto')?.value)||0;
+    const totalPed = carrito.reduce((s,i)=>s+i.total,0);
+    const cambio = monto > totalPed ? monto - totalPed : 0;
+    const pagoInfo = pagoTipo==='efectivo'
+      ? `💵 Pago en efectivo${monto>0?' · Paga con: $'+monto+(cambio>0?' · Cambio: $'+cambio:' · Pago exacto'):''}`
+      : '🏦 Pago por transferencia';
     document.getElementById('resumen-cliente').innerHTML=`
       <div class="resumen-titulo">📋 Datos del cliente</div>
       <div class="resumen-dato">
         👤 <b>${nombre}</b><br>📱 ${tel}<br>
-        ${entregaTipo==='domicilio'?'🏠 Entrega a domicilio: '+dir:'🏪 Recoger en local'}
+        ${entregaTipo==='domicilio'?'🏠 Entrega a domicilio: '+dir:'🏪 Recoger en local'}<br>
+        ${pagoInfo}
       </div>`;
     document.getElementById('resumen-items').innerHTML=carrito.map(item=>`
       <div class="item-carrito">
@@ -867,6 +1020,16 @@
     msg+=`━━━━━━━━━━━━━━━━━━\n`;
     msg+=`👤 *Cliente:* ${nombre}\n📱 *Tel:* ${tel}\n`;
     msg+=entregaTipo==='domicilio'?`🏠 *Entrega:* ${dir}\n`:`🏪 *Recoger en local*\n`;
+    const montoWA=parseFloat(document.getElementById('cli-monto')?.value)||0;
+    const totalWA=carrito.reduce((s,i)=>s+i.total,0);
+    const cambioWA=montoWA>totalWA?montoWA-totalWA:0;
+    if(pagoTipo==='efectivo'){
+      msg+=montoWA>0
+        ?`💵 *Pago:* Efectivo · Paga con $${montoWA}${cambioWA>0?' · Cambio: $'+cambioWA:' · Pago exacto'}\n`
+        :`💵 *Pago:* Efectivo\n`;
+    } else {
+      msg+=`🏦 *Pago:* Transferencia bancaria\n`;
+    }
     msg+=`━━━━━━━━━━━━━━━━━━\n📋 *PLATILLOS:*\n\n`;
     carrito.forEach((item,i)=>{
       msg+=`${i+1}. *${item.nombre}* × ${item.cantidad} = $${item.total}\n`;
